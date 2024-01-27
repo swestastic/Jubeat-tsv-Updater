@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Default values for flags
+xml_file="music_info.xml"
+tsv_file="jubeat.tsv"
+
+usage() {
+    echo "jubeat.tsv updater by swestastic. V1.0"
+    echo
+    echo "Update jubeat.tsv with missing music ids and song titles"
+    echo "Only works with music_info.xml from Jubeat Festo and newer currently"
+    echo 
+    echo "Returns a complete jubeat_new.tsv and music_info.tsv (contains only the new values)"
+    echo
+    echo "Usage: $0 [OPTION]..."
+    echo "Options:"
+    echo "  --xml FILE     path to music_info.xml"
+    echo "  --tsv FILE     path to jubeat.tsv"
+    echo "  --help         display this help message and exit"
+    echo
+    exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --xml)
+        xml_file="$2"
+        shift 2
+        ;;
+    --tsv)
+        tsv_file="$2"
+        shift 2
+        ;;
+    --help)
+        usage
+        ;;
+    *)
+        echo "Error: Unknown option '$1'"
+        echo "Try '$0 --help' for more information"
+        exit 1
+        ;;
+    esac
+done
+
+# Run in python
+python update_tsv.py --xml "$xml_file" --tsv "$tsv_file"
